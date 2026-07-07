@@ -29,19 +29,24 @@ jobs:
           name: PDF
           path: main.pdf
           retention-days: 30
-      - name: Authenticate to Google
-        id: gauth
-        if: env.GDRIVE_SA_KEY != '' && env.GDRIVE_FILE_ID != ''
-        uses: google-github-actions/auth@v2
-        with:
-          credentials_json: ${{ secrets.GDRIVE_SA_KEY }}
-          token_format: access_token
-          access_token_scopes: https://www.googleapis.com/auth/drive
       - name: Upload new version of resume to Google Drive
         if: env.GDRIVE_SA_KEY != '' && env.GDRIVE_FILE_ID != ''
         run: |
+          pip install --quiet google-auth
+          TOKEN=$(python3 - <<'EOF'
+          import json, os
+          from google.oauth2 import service_account
+          from google.auth.transport.requests import Request
+          creds = service_account.Credentials.from_service_account_info(
+              json.loads(os.environ["GDRIVE_SA_KEY"]),
+              scopes=["https://www.googleapis.com/auth/drive"],
+          )
+          creds.refresh(Request())
+          print(creds.token)
+          EOF
+          )
           curl --fail-with-body -sS -X PATCH \
-            -H "Authorization: Bearer ${{ steps.gauth.outputs.access_token }}" \
+            -H "Authorization: Bearer ${TOKEN}" \
             -H "Content-Type: application/pdf" \
             --data-binary @main.pdf \
             "https://www.googleapis.com/upload/drive/v3/files/${GDRIVE_FILE_ID}?uploadType=media&supportsAllDrives=true"
