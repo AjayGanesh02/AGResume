@@ -3,10 +3,19 @@ on:
   push:
     branches:
       - main
+    paths:
+      - main.tex
+      - .github/workflows/main.yml
   workflow_dispatch:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   build_latex:
     runs-on: ubuntu-latest
+    env:
+      GDRIVE_SA_KEY: ${{ secrets.GDRIVE_SA_KEY }}
+      GDRIVE_FILE_ID: ${{ secrets.GDRIVE_FILE_ID }}
     steps:
       - name: Set up Git repository
         uses: actions/checkout@v4
@@ -19,3 +28,20 @@ jobs:
         with:
           name: PDF
           path: main.pdf
+          retention-days: 30
+      - name: Authenticate to Google
+        id: gauth
+        if: env.GDRIVE_SA_KEY != '' && env.GDRIVE_FILE_ID != ''
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GDRIVE_SA_KEY }}
+          token_format: access_token
+          access_token_scopes: https://www.googleapis.com/auth/drive
+      - name: Upload new version of resume to Google Drive
+        if: env.GDRIVE_SA_KEY != '' && env.GDRIVE_FILE_ID != ''
+        run: |
+          curl --fail-with-body -sS -X PATCH \
+            -H "Authorization: Bearer ${{ steps.gauth.outputs.access_token }}" \
+            -H "Content-Type: application/pdf" \
+            --data-binary @main.pdf \
+            "https://www.googleapis.com/upload/drive/v3/files/${GDRIVE_FILE_ID}?uploadType=media&supportsAllDrives=true"
