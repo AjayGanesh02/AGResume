@@ -75,7 +75,7 @@
 \renewcommand\labelitemii{$\vcenter{\hbox{\tiny$\bullet$}}$}
 \newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=0.0in, label={}]}
 \newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
-\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}[topsep=0pt, partopsep=0pt, parsep=0pt, itemsep=0pt]}
 \newcommand{\resumeItemListEnd}{\end{itemize}\vspace{0pt}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%  Heading  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -131,8 +131,8 @@
 % POSITION 1
 {Software Engineer}{June 2024 - Present}
 \resumeItemListStart
-\resumeItem{Currently working on the Applied AI Agent Data Optimization team to develop data and evaluation infrastructure supporting the training of Meta's frontier generative AI/LLM efforts}
-\resumeItem{Previously worked on the Ads Privacy Infra team, developing infrastructure in C++, Python, and Hack/PHP to support Meta's ads systems and their compliance with privacy regulations, safeguarding the data of billions of users and advertisers worldwide across Facebook, Instagram, and WhatsApp}
+\resumeItem{Currently working on the Ads Privacy Infra team, developing infrastructure in C++, Python, and Hack/PHP to support Meta's ads systems and their compliance with privacy regulations, safeguarding the data of billions of users and advertisers worldwide across Facebook, Instagram, and WhatsApp}
+\resumeItem{Previously worked on the Applied AI Agent Data Optimization team, building data and evaluation infrastructure supporting the training of Meta's frontier generative AI/LLM efforts}
 \resumeItemListEnd
 
 % COMPANY 2
@@ -176,21 +176,19 @@
 
 % Project 1
 \resumeProjectHeading
-{Distributed Key-Value Database{\raisebox{-0.2\height}\ }}
+{Distributed Key-Value Database{\raisebox{-0.2\height}\ } $|$ \emph{\small Go, RPCs, AWS}}
 % Date
 {Oct. 2023}
 \resumeItemListStart
-\resumeItem{Tech Stack: Go, RPCs, AWS}
 \resumeItem{Leveraged the Paxos consensus algorithm to create a sharded key-value store in Golang, ensuring high consistency, fault-tolerance, and load balancing; further optimized by reducing network communication and custom garbage collection}
 \resumeItemListEnd
 
 % Project 3
 \resumeProjectHeading
-{C++ Thread Library{\raisebox{-0.2\height}\ }}
+{C++ Thread Library{\raisebox{-0.2\height}\ } $|$ \emph{\small C++, Make, POSIX Threads}}
 % Date
 {Jan. 2023}
 \resumeItemListStart
-\resumeItem{Tech Stack: C++, Make, POSIX Threads}
 \resumeItem{Architected and Implemented a thread library from scratch in C++ to allow for greater concurrency, including synchronization through primitives such as locks and condition variables}
 \resumeItemListEnd
 
